@@ -44,8 +44,16 @@ const SignupForm = () => {
     console.log(credentials);
     axios
       .post(`${baseUrl}/user/signup`, credentials)
-      .then((response) => console.log(response))
-      .catch((err) => console.log(err));
+      .then((response) => {
+        console.log(response);
+        if(response.status === 201) {
+          alert('Succefully signed up!');
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+        alert(err.response.data.message);
+      });
   };
 
   return (

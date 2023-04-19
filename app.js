@@ -10,7 +10,12 @@ const userRoutes = require("./server/routes/user");
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+    methods: ["POST", "GET", "DELETE", "PUT"],
+  })
+);
 app.use(bodyParser.json());
 
 app.use("/user", userRoutes);
