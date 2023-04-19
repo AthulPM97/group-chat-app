@@ -4,6 +4,7 @@ import { Container, Form, Button } from "react-bootstrap";
 // import { useHistory } from "react-router-dom";
 // import { signup } from "../../store/auth-slice";
 import { validate } from "./validate";
+import axios from "axios";
 
 const SignupForm = () => {
   //history
@@ -33,12 +34,18 @@ const SignupForm = () => {
       phone: enteredPhone,
       password: enteredPassword,
     };
+
+    const baseUrl = process.env.REACT_APP_API_URL;
     // if (validate(credentials)) {
     //   // localStorage.setItem('email', enteredEmail);
     //   // dispatch(signup(credentials));
     //   // history.push("/home");
     // }
     console.log(credentials);
+    axios
+      .post(`${baseUrl}/user/signup`, credentials)
+      .then((response) => console.log(response))
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -48,12 +55,7 @@ const SignupForm = () => {
       </div>
       <Form onSubmit={signupHandler}>
         <Form.Group className="mb-2">
-          <Form.Control
-            type="text"
-            placeholder="Name"
-            ref={nameRef}
-            required
-          />
+          <Form.Control type="text" placeholder="Name" ref={nameRef} required />
         </Form.Group>
         <Form.Group className="mb-2">
           <Form.Control
