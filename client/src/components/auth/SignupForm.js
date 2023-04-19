@@ -6,7 +6,7 @@ import { Container, Form, Button } from "react-bootstrap";
 import { validate } from "./validate";
 import axios from "axios";
 
-const SignupForm = () => {
+const SignupForm = (props) => {
   //history
   // const history = useHistory();
 
@@ -46,16 +46,19 @@ const SignupForm = () => {
       .post(`${baseUrl}/user/signup`, credentials)
       .then((response) => {
         console.log(response);
-        if(response.status === 201) {
-          alert('Succefully signed up!');
+        if (response.status === 201) {
+          alert("Succefully signed up!");
         }
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
         alert(err.response.data.message);
       });
   };
 
+  const changeModeHandler = () => {
+    props.onModeChange();
+  };
   return (
     <Container>
       <div className="text-center mb-3">
@@ -95,6 +98,11 @@ const SignupForm = () => {
           </Button>
         </div>
       </Form>
+      <div style={{ textAlign: "center", marginTop: "10px" }}>
+        <Button variant="outline-warning" onClick={changeModeHandler}>
+          Already have an account? Login!
+        </Button>
+      </div>
     </Container>
   );
 };

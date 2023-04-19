@@ -1,6 +1,11 @@
 const User = require("../models/user");
 
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
+function generateAccessToken(id) {
+  return jwt.sign({ id: id }, process.env.SECRET_KEY);
+}
 
 exports.postUserSignup = async (req, res, next) => {
   const { name, email, phone, password } = req.body;
@@ -19,11 +24,15 @@ exports.postUserSignup = async (req, res, next) => {
         });
         return res.status(201).json({
           message: "User created successfully",
-          //   token: generateAccessToken(user.id),
+          token: generateAccessToken(user.id),
         });
       });
     }
   } catch (err) {
     console.log("error signin up", err);
   }
+};
+
+exports.postUserLogin = (req, res, next) => {
+  
 };
