@@ -7,7 +7,8 @@ const LoginForm = (props) => {
   const emailRef = useRef();
   const passwordRef = useRef();
 
-  const loginHandler = () => {
+  const loginHandler = (e) => {
+    e.preventDefault();
     const credentials = {
         email: emailRef.current.value,
         password: passwordRef.current.value,
@@ -15,6 +16,8 @@ const LoginForm = (props) => {
     const baseUrl = process.env.REACT_APP_API_URL;
     axios.post(`${baseUrl}/user/login`, credentials).then(response => {
         console.log(response);
+        alert(response.data.message);
+        localStorage.setItem('token', response.data.token);
     }).catch(err => console.log(err));
   };
   const changeModeHandler = () => {
@@ -45,7 +48,7 @@ const LoginForm = (props) => {
         </Form.Group>
         <div className="text-center">
           <Button variant="primary" type="submit">
-            Sign Up
+            Login
           </Button>
         </div>
       </Form>

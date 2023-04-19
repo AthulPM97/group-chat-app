@@ -33,6 +33,23 @@ exports.postUserSignup = async (req, res, next) => {
   }
 };
 
-exports.postUserLogin = (req, res, next) => {
-  
+exports.postUserLogin = async (req, res, next) => {
+  const {email, password} = req.body;
+  try {
+    const user = await User.findOne({where: {email: email}});
+    if(user) {
+      bcrypt.compare(password, user.password, (err, result) => {
+        if(err) {
+          res.status(401).json({message: 'Password does not match!'});
+        }
+        if(result) {
+          res.status(200).json({message: 'Successfully logged in!', token: generateAccessToken(user.id)});
+        }
+      })
+    } else {
+      res.status(404).json({message: 'User not found...'});
+    }
+  }catch(err){
+    console.log(err);
+  }
 };
