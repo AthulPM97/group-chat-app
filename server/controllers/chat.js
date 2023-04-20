@@ -1,5 +1,7 @@
+const { Sequelize } = require("sequelize");
 const Message = require("../models/message");
 const sequelize = require("../util/database");
+const { Op } = Sequelize;
 
 exports.postChat = async (req, res, next) => {
   const t = await sequelize.transaction();
@@ -18,7 +20,7 @@ exports.postChat = async (req, res, next) => {
     );
     // console.log(message);
     await t.commit();
-    res.status(200).json({ message: "added succssfully" });
+    res.status(200).json({ message: message });
   } catch (err) {
     console.log(err);
     await t.rollback();
@@ -27,11 +29,16 @@ exports.postChat = async (req, res, next) => {
 
 exports.getChat = async (req, res, next) => {
   try {
-    const messages = await Message.findAll();
+    const messages = await Message.findAll({
+      attributes: ["id", "content", "userName", "userId"],
+      order: [["createdAt", "DESC"]],
+      limit: 10,
+    });
+    const reversedMessages = messages.reverse();
     if (messages.length === 0) {
       return res.status(404).json({ message: "No chats found!" });
     }
-    return res.status(200).json({ messages: messages });
+    return res.status(200).json({ messages: reversedMessages });
   } catch (err) {
     console.log(err);
   }

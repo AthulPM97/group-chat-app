@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useRef } from "react";
 import { Button, Form, FormControl } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { chatActions } from "../../store/chat-slice";
 
 const Replybox = () => {
   //refs
@@ -10,6 +11,7 @@ const Replybox = () => {
   //store
   const name = useSelector((x) => x.auth.name);
   const token = useSelector((x) => x.auth.token);
+  const dispatch = useDispatch();
 
   //handlers
   const sendMessageHandler = (e) => {
@@ -23,7 +25,9 @@ const Replybox = () => {
     console.log(message);
     axios
       .post(`${baseUrl}/chat`, message, { headers: { Authorization: token } })
-      .then((response) => console.log(response))
+      .then((response) => {
+        console.log(response);
+      })
       .catch((err) => console.log(err));
   };
 
