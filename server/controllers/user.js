@@ -43,7 +43,7 @@ exports.postUserLogin = async (req, res, next) => {
           res.status(401).json({message: 'Password does not match!'});
         }
         if(result) {
-          res.status(200).json({message: 'Successfully logged in!', token: generateAccessToken(user.id)});
+          res.status(200).json({message: 'Successfully logged in!', token: generateAccessToken(user.id), name: user.name});
         }
       })
     } else {

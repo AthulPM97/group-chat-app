@@ -1,13 +1,22 @@
 import Auth from "./pages/Auth";
 
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
+import { history } from "./helpers/history";
+import { useSelector } from "react-redux";
 
 function App() {
+  //custom history object config
+  history.navigate = useNavigate();
+  history.location = useLocation();
+
+  //store
+  const isLoggedIn = useSelector((x) => x.auth.isLoggedIn);
+
   return (
     <Routes>
-     <Route path="/" element={<Auth />} />
-     <Route path='/home' element={<Home />} />
+      {!isLoggedIn && <Route path="/" element={<Auth />} />}
+      {isLoggedIn && <Route path="/home" element={<Home />} />}
     </Routes>
   );
 }

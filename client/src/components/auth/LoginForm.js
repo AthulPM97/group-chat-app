@@ -1,24 +1,32 @@
 import { useRef } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 import axios from "axios";
+import { login } from "../../store/thunks/login-thunk";
+import { useDispatch } from "react-redux";
 
 const LoginForm = (props) => {
   //refs
   const emailRef = useRef();
   const passwordRef = useRef();
 
+  //store
+  const dispatch = useDispatch();
+
+  //handlers
   const loginHandler = (e) => {
     e.preventDefault();
     const credentials = {
-        email: emailRef.current.value,
-        password: passwordRef.current.value,
+      email: emailRef.current.value,
+      password: passwordRef.current.value,
     };
-    const baseUrl = process.env.REACT_APP_API_URL;
-    axios.post(`${baseUrl}/user/login`, credentials).then(response => {
-        console.log(response);
-        alert(response.data.message);
-        localStorage.setItem('token', response.data.token);
-    }).catch(err => console.log(err));
+    dispatch(login(credentials));
+    // const baseUrl = process.env.REACT_APP_API_URL;
+
+    // axios.post(`${baseUrl}/user/login`, credentials).then(response => {
+    //     console.log(response);
+    //     alert(response.data.message);
+    //     localStorage.setItem('token', response.data.token);
+    // }).catch(err => console.log(err));
   };
   const changeModeHandler = () => {
     props.onModeChange();

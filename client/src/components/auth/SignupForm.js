@@ -1,15 +1,11 @@
 import { useRef } from "react";
 import { Container, Form, Button } from "react-bootstrap";
-// import { useDispatch } from "react-redux";
-// import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 // import { signup } from "../../store/auth-slice";
 import { validate } from "./validate";
 import axios from "axios";
 
 const SignupForm = (props) => {
-  //history
-  // const history = useHistory();
-
   //refs
   const nameRef = useRef();
   const emailRef = useRef();
@@ -17,7 +13,7 @@ const SignupForm = (props) => {
   const passwordRef = useRef();
 
   //store
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   //handlers
   const signupHandler = (event) => {
