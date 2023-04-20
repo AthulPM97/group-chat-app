@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { history } from "../helpers/history";
 
-const token = localStorage.getItem("token") || null;
-const name = localStorage.getItem("name") || null;
+const token = JSON.parse(localStorage.getItem("token")) || null;
+const name = JSON.parse(localStorage.getItem("name")) || null;
 
 const initialAuthState = {
   isLoggedIn: !!token,

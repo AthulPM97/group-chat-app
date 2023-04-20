@@ -10,6 +10,7 @@ exports.postChat = async (req, res, next) => {
       {
         content,
         userId: req.user.dataValues.id,
+        userName: req.user.dataValues.name,
       },
       {
         transaction: t,
@@ -21,5 +22,17 @@ exports.postChat = async (req, res, next) => {
   } catch (err) {
     console.log(err);
     await t.rollback();
+  }
+};
+
+exports.getChat = async (req, res, next) => {
+  try {
+    const messages = await Message.findAll();
+    if (messages.length === 0) {
+      return res.status(404).json({ message: "No chats found!" });
+    }
+    return res.status(200).json({ messages: messages });
+  } catch (err) {
+    console.log(err);
   }
 };
