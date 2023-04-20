@@ -2,11 +2,14 @@ import { Container, Table } from "react-bootstrap";
 import Replybox from "./Replybox";
 import Chatrow from "./Chatrow";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { chatActions } from "../../store/chat-slice";
 
 const Chatbox = () => {
+  //states
+  const [count, setCount] = useState(0);
+
   //store
   const messages = useSelector((x) => x.chat.messages);
   const token = useSelector((x) => x.auth.token);
@@ -24,7 +27,13 @@ const Chatbox = () => {
         dispatch(chatActions.setMessages(response.data.messages));
       })
       .catch((err) => console.log(err));
-  }, []);
+
+      const intervalId = setInterval(() => {
+        console.log("get data called");
+        setCount(count + 1);
+      }, 2000);
+      return () => clearInterval(intervalId);
+  }, [count]);
 
   return (
     <Container>

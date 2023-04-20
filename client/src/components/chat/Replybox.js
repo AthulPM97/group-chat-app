@@ -19,6 +19,7 @@ const Replybox = () => {
       name: name,
       content: messageRef.current.value,
     };
+    messageRef.current.value = '';
     console.log(message);
     axios
       .post(`${baseUrl}/chat`, message, { headers: { Authorization: token } })
