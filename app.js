@@ -8,9 +8,14 @@ const sequelize = require("./server/util/database");
 
 const userRoutes = require("./server/routes/user");
 const chatRoutes = require("./server/routes/chat");
+const groupRoutes = require("./server/routes/group");
 
 const Message = require("./server/models/message");
 const User = require("./server/models/user");
+const Group = require("./server/models/group");
+const GroupMessage = require("./server/models/group-message");
+const GroupUser = require("./server/models/group-user");
+
 const authenticateUser = require("./server/middlewares/authenticate");
 
 const app = express();
@@ -27,11 +32,27 @@ app.use("/user", userRoutes);
 
 app.use("/chat", authenticateUser, chatRoutes);
 
+app.use("/groups", authenticateUser, groupRoutes);
+
 User.hasMany(Message);
 Message.belongsTo(User);
 
+User.hasMany(GroupMessage);
+GroupMessage.belongsTo(User);
+
+Group.hasMany(GroupMessage);
+GroupMessage.belongsTo(Group);
+
+User.belongsToMany(Group, {through: GroupUser});
+Group.belongsToMany(User, {through: GroupUser});
+
+GroupUser.belongsTo(User);
+GroupUser.belongsTo(Group);
+User.hasMany(GroupUser);
+Group.hasMany(GroupUser);
+
 sequelize
-  // .sync({force: true})
+  // .sync({ force: true })
   .sync()
   .then(() => {
     app.listen(process.env.PORT || 3000);

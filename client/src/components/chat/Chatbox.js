@@ -39,7 +39,6 @@ const Chatbox = () => {
     <Container>
       <Table striped bordered hover style={{ minHeight: "100px" }}>
         <tbody>
-          {console.log(messages)}
           {messages.map((item) => (
             <Chatrow
               key={item.id}
