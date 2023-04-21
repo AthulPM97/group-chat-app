@@ -30,7 +30,7 @@ const Sidebar = () => {
       </ListGroup.Item>
       {myGroups.map((item) => {
         return (
-          <ListGroup.Item action href="" key={item.id}>
+          <ListGroup.Item action href={`/groups/${item.id}`} key={item.id}>
             {item.name}
           </ListGroup.Item>
         );

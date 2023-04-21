@@ -15,6 +15,7 @@ import React from "react";
 import AddGroupForm from "./components/groups/AddGroupForm";
 import Sidebar from "./components/UI/Sidebar";
 import { Col, Row } from "react-bootstrap";
+import GroupChat from "./pages/GroupChat";
 
 function App() {
   //custom history object config
@@ -37,6 +38,7 @@ function App() {
             {isLoggedIn && (
               <Route path="/add-group" element={<AddGroupForm />} />
             )}
+            {isLoggedIn && <Route path="/groups/:groupId" element={<GroupChat/>} />}
           </Routes>
         </Col>
       </Row>

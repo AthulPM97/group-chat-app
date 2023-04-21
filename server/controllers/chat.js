@@ -1,7 +1,5 @@
-const { Sequelize } = require("sequelize");
 const Message = require("../models/message");
 const sequelize = require("../util/database");
-const { Op } = Sequelize;
 
 exports.postChat = async (req, res, next) => {
   const t = await sequelize.transaction();
@@ -18,7 +16,6 @@ exports.postChat = async (req, res, next) => {
         transaction: t,
       }
     );
-    // console.log(message);
     await t.commit();
     res.status(200).json({ message: message });
   } catch (err) {

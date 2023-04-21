@@ -1,10 +1,10 @@
 import { Container, Table } from "react-bootstrap";
-import Replybox from "./Replybox";
 import Chatrow from "./Chatrow";
+import GroupReplyBox from "./GroupReplyBox";
 
 
-const Chatbox = (props) => {
-  const {messages} = props;
+const GroupChatbox = (props) => {
+  const {messages, groupId} = props;
 
   return (
     <Container>
@@ -19,9 +19,9 @@ const Chatbox = (props) => {
           ))}
         </tbody>
       </Table>
-      <Replybox />
+      <GroupReplyBox groupId={groupId}/>
     </Container>
   );
 };
 
-export default Chatbox;
+export default GroupChatbox;
