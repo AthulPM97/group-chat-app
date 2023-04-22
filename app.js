@@ -9,6 +9,7 @@ const sequelize = require("./server/util/database");
 const userRoutes = require("./server/routes/user");
 const chatRoutes = require("./server/routes/chat");
 const groupRoutes = require("./server/routes/group");
+const adminRoutes = require('./server/routes/admin');
 
 const Message = require("./server/models/message");
 const User = require("./server/models/user");
@@ -33,6 +34,8 @@ app.use("/user", userRoutes);
 app.use("/chat", authenticateUser, chatRoutes);
 
 app.use("/groups", authenticateUser, groupRoutes);
+
+app.use('/admin', authenticateUser, adminRoutes);
 
 User.hasMany(Message);
 Message.belongsTo(User);

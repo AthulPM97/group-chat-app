@@ -84,21 +84,25 @@ exports.addMember = async (req, res, next) => {
 exports.getMembers = async (req, res) => {
   const groupId = Number(req.params.groupId);
   try {
-    const result = await User.findAll({
+    const members = await GroupUser.findAll({
       attributes: [
-        "name",
-        "phone",
-        [
-          Sequelize.literal(
-            `(SELECT isAdmin FROM groupusers WHERE groupusers.userId = User.id AND groupusers.groupId = ${groupId})`
-          ),
-          "isAdmin",
-        ],
+        'id',
+        [Sequelize.literal('`User`.`name`'), 'name'],
+        [Sequelize.literal('`User`.`phone`'), 'phone'],
+        'isAdmin'
       ],
-      raw: true,
+      include: [
+        {
+          model: User,
+          attributes: []
+        }
+      ],
+      where: {
+        groupId: groupId
+      }
     });
 
-    res.status(200).json(result);
+    res.status(200).json(members);
   } catch (err) {
     console.log(err);
   }

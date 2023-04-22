@@ -10,9 +10,9 @@ const ManageGroup = () => {
   const [members, setMembers] = useState([]);
 
   const token = useSelector((x) => x.auth.token);
+  const baseUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    const baseUrl = process.env.REACT_APP_API_URL;
     axios
       .get(`${baseUrl}/groups/manage/${groupId}`, {
         headers: {
@@ -20,11 +20,47 @@ const ManageGroup = () => {
         },
       })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         setMembers(response.data);
       })
       .catch((err) => console.log(err));
   }, []);
+
+  //handlers
+  const makeAdminHandler = (name) => {
+    const data = {
+      name: name,
+      groupId: groupId,
+    };
+    axios
+      .post(`${baseUrl}/admin/make-admin`, data, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((response) => {
+        alert(response.data.message);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const deleteMemberHandler = (name) => {
+    const data = {
+      name,
+      groupId,
+    };
+
+    axios
+      .post(`${baseUrl}/admin/delete-member`, data, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((response) => {
+        alert(response.data.message);
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <Container>
@@ -33,6 +69,7 @@ const ManageGroup = () => {
           const isAdmin = member.isAdmin == 1;
           return (
             <li
+              key={member.id}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -44,11 +81,19 @@ const ManageGroup = () => {
                 <Button
                   variant="outline-primary"
                   style={{ marginRight: "10px" }}
+                  onClick={makeAdminHandler.bind(null, member.name)}
                 >
                   Make Admin
                 </Button>
               )}
-              {!isAdmin && <Button variant="danger">Remove</Button>}
+              {!isAdmin && (
+                <Button
+                  variant="danger"
+                  onClick={deleteMemberHandler.bind(null, member.name)}
+                >
+                  Remove
+                </Button>
+              )}
             </li>
           );
         })}
