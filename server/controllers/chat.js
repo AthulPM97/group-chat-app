@@ -1,6 +1,8 @@
 const Message = require("../models/message");
 const sequelize = require("../util/database");
 
+// const io = require('socket.io')(3000);
+
 exports.postChat = async (req, res, next) => {
   const t = await sequelize.transaction();
   const { content } = req.body;
@@ -25,6 +27,7 @@ exports.postChat = async (req, res, next) => {
 };
 
 exports.getChat = async (req, res, next) => {
+  
   try {
     const messages = await Message.findAll({
       attributes: ["id", "content", "userName", "userId"],
