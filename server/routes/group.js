@@ -14,4 +14,6 @@ router.post("/:groupId", groupController.addMember);
 
 router.get('/:groupId', groupController.getMessages);
 
+router.get('/manage/:groupId', groupController.getMembers);
+
 module.exports = router;

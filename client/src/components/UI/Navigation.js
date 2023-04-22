@@ -8,6 +8,7 @@ const Navigation = () => {
         <Nav className="me-auto">
           <Nav.Link href="/home">Global Chat</Nav.Link>
           <Nav.Link href="/add-group">Create group</Nav.Link>
+          <Nav.Link href="/manage-groups">Manage groups</Nav.Link>
         </Nav>
         <Button variant="outline-danger">Logout</Button>
       </Container>

@@ -1,3 +1,4 @@
+const { Sequelize } = require("sequelize");
 const Group = require("../models/group");
 const GroupMessage = require("../models/group-message");
 const GroupUser = require("../models/group-user");
@@ -19,10 +20,12 @@ exports.createGroup = async (req, res, next) => {
         transaction: t,
       }
     );
-    // console.log('created group', group, user)
     await t.commit();
-    await group.addUser(user);
-    // await group.setUsers([user]);
+    await GroupUser.create({
+      groupId: group.dataValues.id,
+      userId: user.dataValues.id,
+      isAdmin: true,
+    });
     return res.status(201).json({ message: "Group created!" });
   } catch (err) {
     console.log(err);
@@ -42,14 +45,9 @@ exports.getGroups = async (req, res, next) => {
           where: {
             userId: userId,
           },
-          include: {
-            model: User,
-            attributes: [],
-          },
         },
       ],
     });
-
     if (groups) {
       return res.status(200).json({ groups: groups });
     } else {
@@ -64,10 +62,43 @@ exports.addMember = async (req, res, next) => {
   const groupId = Number(req.params.groupId);
   const phone = Number(req.body.phone);
   try {
-    const group = await Group.findByPk(groupId);
-    const user = await User.findOne({ where: { phone: phone } });
-    await group.addUser(user);
-    return res.status(200).json({ message: "user added" });
+    const groupUser = await GroupUser.findOne({
+      where: {
+        groupId: groupId,
+        userId: req.user.dataValues.id,
+      },
+    });
+    if (groupUser.dataValues.isAdmin) {
+      const group = await Group.findByPk(groupId);
+      const user = await User.findOne({ where: { phone: phone } });
+      await group.addUser(user);
+      return res.status(200).json({ message: "user added" });
+    } else {
+      return res.status(500).json({ message: "Only admin can add users!" });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+exports.getMembers = async (req, res) => {
+  const groupId = Number(req.params.groupId);
+  try {
+    const result = await User.findAll({
+      attributes: [
+        "name",
+        "phone",
+        [
+          Sequelize.literal(
+            `(SELECT isAdmin FROM groupusers WHERE groupusers.userId = User.id AND groupusers.groupId = ${groupId})`
+          ),
+          "isAdmin",
+        ],
+      ],
+      raw: true,
+    });
+
+    res.status(200).json(result);
   } catch (err) {
     console.log(err);
   }
@@ -91,12 +122,27 @@ exports.sendMessage = async (req, res, next) => {
 
 exports.getMessages = async (req, res, next) => {
   const groupId = Number(req.params.groupId);
+  const userId = Number(req.user.dataValues.id);
   try {
     const messages = await GroupMessage.findAll({
+      attributes: [
+        'id',
+        'content',
+        [Sequelize.literal('`User`.`name`'), 'name']
+      ],
+      include: [
+        {
+          model: User,
+          attributes: []
+        }
+      ],
       where: {
-        groupId: groupId,
+        groupId: groupId
       },
+      raw: true
     });
+    
+    // console.log(messages);
     if (messages) {
       return res.status(200).json({ messages: messages });
     }

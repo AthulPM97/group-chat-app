@@ -2,9 +2,8 @@ import { Container, Table } from "react-bootstrap";
 import Replybox from "./Replybox";
 import Chatrow from "./Chatrow";
 
-
 const Chatbox = (props) => {
-  const {messages} = props;
+  const { messages } = props;
 
   return (
     <Container>

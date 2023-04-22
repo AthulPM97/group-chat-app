@@ -2,9 +2,8 @@ import { Container, Table } from "react-bootstrap";
 import Chatrow from "./Chatrow";
 import GroupReplyBox from "./GroupReplyBox";
 
-
 const GroupChatbox = (props) => {
-  const {messages, groupId} = props;
+  const { messages, groupId } = props;
 
   return (
     <Container>
@@ -14,12 +13,12 @@ const GroupChatbox = (props) => {
             <Chatrow
               key={item.id}
               message={item.content}
-              sender={item.userName}
+              sender={item.name}
             />
           ))}
         </tbody>
       </Table>
-      <GroupReplyBox groupId={groupId}/>
+      <GroupReplyBox groupId={groupId} />
     </Container>
   );
 };

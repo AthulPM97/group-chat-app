@@ -16,6 +16,8 @@ import AddGroupForm from "./components/groups/AddGroupForm";
 import Sidebar from "./components/UI/Sidebar";
 import { Col, Row } from "react-bootstrap";
 import GroupChat from "./pages/GroupChat";
+import ManageGroups from "./components/groups/ManageGroups";
+import ManageGroup from "./components/groups/ManageGroup";
 
 function App() {
   //custom history object config
@@ -29,7 +31,11 @@ function App() {
     <React.Fragment>
       {isLoggedIn && <Navigation />}
       <Row>
-        {isLoggedIn && <Col md={2}><Sidebar /></Col>}
+        {isLoggedIn && (
+          <Col md={2}>
+            <Sidebar />
+          </Col>
+        )}
         <Col>
           <Routes>
             {!isLoggedIn && <Route path="*" element={<Auth />} />}
@@ -38,7 +44,13 @@ function App() {
             {isLoggedIn && (
               <Route path="/add-group" element={<AddGroupForm />} />
             )}
-            {isLoggedIn && <Route path="/groups/:groupId" element={<GroupChat/>} />}
+            {isLoggedIn && (
+              <Route path="/groups/:groupId" element={<GroupChat />} />
+            )}
+            {isLoggedIn && (
+              <Route path="/manage-groups" element={<ManageGroups />} />
+            )}
+            {isLoggedIn && <Route path="/manage-groups/:groupId" element={<ManageGroup />} />}
           </Routes>
         </Col>
       </Row>

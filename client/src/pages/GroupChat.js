@@ -27,6 +27,7 @@ const GroupChat = () => {
         },
       })
       .then((response) => {
+        // console.log(response.data);
         dispatch(groupActions.setMyGroupMessages(response.data.messages));
       })
       .catch((err) => console.log(err));

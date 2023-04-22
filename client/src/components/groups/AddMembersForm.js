@@ -1,6 +1,12 @@
 import axios from "axios";
 import { useRef } from "react";
-import { Button, Form, FormControl, FormGroup } from "react-bootstrap";
+import {
+  Button,
+  Container,
+  Form,
+  FormControl,
+  FormGroup,
+} from "react-bootstrap";
 import { useSelector } from "react-redux";
 
 const AddMembersForm = (props) => {
@@ -22,22 +28,24 @@ const AddMembersForm = (props) => {
       })
       .then((response) => {
         console.log(response);
-        phoneNoRef.current.value = '';
+        phoneNoRef.current.value = "";
       })
       .catch((err) => console.log(err));
   };
   return (
-    <Form onSubmit={addMemberHandler}>
-      <FormGroup>
-        <FormControl
-          type="text"
-          placeholder="Enter user's phone number"
-          ref={phoneNoRef}
-        />
-        <Button type="submit" variant="outline-primary">
-          Add member
-        </Button>
-      </FormGroup>
+    <Form onSubmit={addMemberHandler} style={{marginBottom: '10px'}}>
+      <Container>
+        <FormGroup>
+          <FormControl
+            type="text"
+            placeholder="Enter user's phone number"
+            ref={phoneNoRef}
+          />
+          <Button type="submit" variant="outline-primary">
+            Add member
+          </Button>
+        </FormGroup>
+      </Container>
     </Form>
   );
 };
