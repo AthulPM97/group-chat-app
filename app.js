@@ -20,6 +20,7 @@ const GroupUser = require("./server/models/group-user");
 const authenticateUser = require("./server/middlewares/authenticate");
 
 const app = express();
+
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 

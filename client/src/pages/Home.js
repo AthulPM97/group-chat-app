@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { chatActions } from "../store/chat-slice";
+import {io} from 'socket.io-client';
 
 const Home = () => {
   const baseUrl = process.env.REACT_APP_API_URL;
@@ -14,10 +15,9 @@ const Home = () => {
   //store
   const messages = useSelector((x) => x.chat.messages);
   const token = useSelector((x) => x.auth.token);
-
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  useEffect(() => {   
     axios
       .get(`${baseUrl}/chat`, {
         headers: {

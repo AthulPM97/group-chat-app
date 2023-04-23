@@ -86,20 +86,20 @@ exports.getMembers = async (req, res) => {
   try {
     const members = await GroupUser.findAll({
       attributes: [
-        'id',
-        [Sequelize.literal('`User`.`name`'), 'name'],
-        [Sequelize.literal('`User`.`phone`'), 'phone'],
-        'isAdmin'
+        "id",
+        [Sequelize.literal("`User`.`name`"), "name"],
+        [Sequelize.literal("`User`.`phone`"), "phone"],
+        "isAdmin",
       ],
       include: [
         {
           model: User,
-          attributes: []
-        }
+          attributes: [],
+        },
       ],
       where: {
-        groupId: groupId
-      }
+        groupId: groupId,
+      },
     });
 
     res.status(200).json(members);
@@ -130,22 +130,22 @@ exports.getMessages = async (req, res, next) => {
   try {
     const messages = await GroupMessage.findAll({
       attributes: [
-        'id',
-        'content',
-        [Sequelize.literal('`User`.`name`'), 'name']
+        "id",
+        "content",
+        [Sequelize.literal("`User`.`name`"), "name"],
       ],
       include: [
         {
           model: User,
-          attributes: []
-        }
+          attributes: [],
+        },
       ],
       where: {
-        groupId: groupId
+        groupId: groupId,
       },
-      raw: true
+      raw: true,
     });
-    
+
     // console.log(messages);
     if (messages) {
       return res.status(200).json({ messages: messages });

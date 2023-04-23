@@ -8,4 +8,6 @@ router.post("/", chatController.postChat);
 
 router.get('/', chatController.getChat);
 
+router.post('/upload', chatController.postUploadImage);
+
 module.exports = router;

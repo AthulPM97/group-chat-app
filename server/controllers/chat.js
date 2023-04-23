@@ -43,3 +43,7 @@ exports.getChat = async (req, res, next) => {
     console.log(err);
   }
 };
+
+exports.postUploadImage = async (req, res) => {
+  console.log(req.body);
+}
